@@ -3,6 +3,7 @@ import type { LifeCycles } from 'single-spa';
 import { getContainerElementAndSetTemplate } from 'single-spa-angular/internals';
 
 import { SingleSpaPlatformLocation } from './platform-providers';
+import { smellsLikeAPromise } from './smells-like-a-promise';
 import type {
   SingleSpaAngularOptions,
   BootstrappedSingleSpaAngularOptions,
@@ -99,7 +100,7 @@ async function mount(
 
   const bootstrapPromise = options.bootstrapFunction(props);
 
-  if (!(bootstrapPromise instanceof Promise)) {
+  if (!smellsLikeAPromise(bootstrapPromise)) {
     throw Error(
       `single-spa-angular: the options.bootstrapFunction must return a promise, but instead returned a '${typeof bootstrapPromise}' that is not a Promise`,
     );
